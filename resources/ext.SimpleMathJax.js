@@ -1,3 +1,4 @@
+( function () {
 
 window.MathJax = {
   tex: {
@@ -124,11 +125,21 @@ window.MathJax = {
   }
 };
 
+let isMathJaxLoaded = false;
+function loadMathJax() {
+	if ( !isMathJaxLoaded ) {
+		isMathJaxLoaded = true;
+		var script = document.createElement('script');
+		script.src = mw.config.get('wgExtensionAssetsPath') + '/SimpleMathJax/resources/MathJax/es5/tex-chtml.js';
+		script.async = true;
+		document.head.appendChild(script);
+	}
+}
+
 mw.hook( 'wikipage.content' ).add( function ( $content ) {
-  var script = document.createElement('script');
-  script.src = mw.config.get('wgSmjUseCdn')
-    ? 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js'
-    : mw.config.get('wgExtensionAssetsPath') + '/SimpleMathJax/resources/MathJax/es5/tex-chtml.js';
-  script.async = true;
-  document.head.appendChild(script);
-});
+	if ( $content[ 0 ].querySelector( '.smj-container' ) ) {
+		loadMathJax();
+	}
+} );
+
+} )();
