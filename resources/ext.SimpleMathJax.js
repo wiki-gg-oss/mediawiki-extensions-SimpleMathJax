@@ -1,4 +1,4 @@
-mw.hook( 'wikipage.content' ).add( function ( $content ) {
+
 window.MathJax = {
   tex: {
     inlineMath: mw.config.get('wgSmjExtraInlineMath').concat([['[math]','[/math]']]),
@@ -123,12 +123,12 @@ window.MathJax = {
     }
   }
 };
-(function () {
+
+mw.hook( 'wikipage.content' ).add( function ( $content ) {
   var script = document.createElement('script');
   script.src = mw.config.get('wgSmjUseCdn')
     ? 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js'
     : mw.config.get('wgExtensionAssetsPath') + '/SimpleMathJax/resources/MathJax/es5/tex-chtml.js';
   script.async = true;
   document.head.appendChild(script);
-})();
 });
