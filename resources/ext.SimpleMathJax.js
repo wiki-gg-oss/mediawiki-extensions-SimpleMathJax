@@ -117,27 +117,32 @@ window.MathJax = {
     load: config.SmjUseChem ? ['[tex]/mhchem'] : []
   },
   startup: {
-    pageReady: () => {
-      return MathJax.startup.defaultPageReady().then(() => {
-        $(".MathJax").parent().css('opacity',1);
-      });
-    }
+    typeset: false
   }
 };
 
-let isMathJaxLoaded = false;
+let loadPromise = null;
 function loadMathJax() {
-	if ( !isMathJaxLoaded ) {
-		isMathJaxLoaded = true;
-		var script = document.createElement('script');
-		script.src = mw.config.get('wgExtensionAssetsPath') + '/SimpleMathJax/resources/MathJax/es5/tex-chtml.js';
-		script.async = true;
-		document.head.appendChild(script);
+	if ( !loadPromise ) {
+    loadPromise = new Promise( resolve => {
+      window.MathJax.startup.pageReady = async () => {
+        await MathJax.startup.defaultPageReady();
+        resolve();
+      };
+
+      const scriptUrl = mw.config.get('wgExtensionAssetsPath') + '/SimpleMathJax/resources/MathJax/es5/tex-chtml.js';
+  		mw.loader.addScriptTag( scriptUrl );
+    } );
 	}
+
+  return loadPromise;
 }
 
 mw.hook( 'wikipage.content' ).add( function ( $content ) {
 	if ( $content[ 0 ].querySelector( '.smj-container' ) ) {
-		loadMathJax();
+		loadMathJax().then( async () => {
+      await MathJax.typesetPromise( [ '.smj-container' ] );
+      $( '.smj-container > .MathJax' ).parent().css('opacity',1);
+    } );
 	}
 } );
