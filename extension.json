@@ -24,7 +24,19 @@
 	},
 	"ResourceModules": {
 		"ext.SimpleMathJax": {
-			"scripts": ["resources/ext.SimpleMathJax.js"]
+			"packageFiles": [
+				"resources/ext.SimpleMathJax.js",
+				{
+					"name": "resources/config.json",
+					"config": [
+						"SmjExtraInlineMath",
+						"SmjDisplayMath",
+						"SmjUseChem",
+						"SmjScale",
+						"SmjDisplayAlign"
+					]
+				}
+			]
 		}
 	},
 	"ResourceFileModulePaths": {

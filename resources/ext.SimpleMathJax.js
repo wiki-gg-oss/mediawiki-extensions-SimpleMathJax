@@ -1,10 +1,10 @@
-( function () {
+const config = require( './config.json' );
 
 window.MathJax = {
   tex: {
-    inlineMath: mw.config.get('wgSmjExtraInlineMath').concat([['[math]','[/math]']]),
-    displayMath: mw.config.get('wgSmjDisplayMath'),
-    packages: mw.config.get('wgSmjUseChem') ? {'[+]': ['mhchem']} : {},
+    inlineMath: config.SmjExtraInlineMath.concat([['[math]','[/math]']]),
+    displayMath: config.SmjDisplayMath,
+    packages: config.SmjUseChem ? {'[+]': ['mhchem']} : {},
     macros: {
       AA: "{\u00c5}",
       alef: "{\\aleph}",
@@ -110,11 +110,11 @@ window.MathJax = {
     }
   },
   chtml: {
-    scale: mw.config.get('wgSmjScale'),
-    displayAlign: mw.config.get('wgSmjDisplayAlign')
+    scale: config.SmjScale,
+    displayAlign: config.SmjDisplayAlign
   },
   loader: {
-    load: mw.config.get('wgSmjUseChem') ? ['[tex]/mhchem'] : []
+    load: config.SmjUseChem ? ['[tex]/mhchem'] : []
   },
   startup: {
     pageReady: () => {
@@ -141,5 +141,3 @@ mw.hook( 'wikipage.content' ).add( function ( $content ) {
 		loadMathJax();
 	}
 } );
-
-} )();
