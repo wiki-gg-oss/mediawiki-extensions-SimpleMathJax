@@ -3,9 +3,7 @@ use MediaWiki\Html\Html;
 class SimpleMathJaxHooks {
 
 	public static function onParserFirstCallInit( Parser $parser ) {
-		global $wgOut, $wgSmjUseChem;
-
-		$wgOut->addModules( [ 'ext.SimpleMathJax' ] );
+		global $wgSmjUseChem;
 
 		$parser->setHook( 'math', __CLASS__ . '::renderMath' );
 		if( $wgSmjUseChem ) $parser->setHook( 'chem', __CLASS__ . '::renderChem' );	}
@@ -28,6 +26,7 @@ class SimpleMathJaxHooks {
 		$attributes = [ "style" => "opacity:.5", "class" => "smj-container" ];
 		$hookContainer->run( "SimpleMathJaxAttributes", [ &$attributes, $tex ] );
 		$element = Html::Element( "span", $attributes, "[math]{$tex}[/math]" );
+		$parser->getOutput()->addModules( [ 'ext.SimpleMathJax' ] );
 		return [$element, 'markerType'=>'nowiki'];
 	}
 }
