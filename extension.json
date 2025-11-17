@@ -24,8 +24,7 @@
 	},
 	"ResourceModules": {
 		"ext.SimpleMathJax": {
-			"scripts": ["resources/ext.SimpleMathJax.js"],
-			"targets": ["desktop", "mobile"]
+			"scripts": ["resources/ext.SimpleMathJax.js"]
 		}
 	},
 	"ResourceFileModulePaths": {
